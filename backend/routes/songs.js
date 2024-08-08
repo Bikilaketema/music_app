@@ -23,18 +23,46 @@ router.get('/allsongs', async (req, res) => {
   }
 });
 
-// Update a song
-router.patch('/update/:id', async (req, res) => {
+//Get a single song
+router.get('/get/:id', async (req, res) => {
   try {
-    const song = await Song.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    const song = await Song.findById(req.params.id)
     if (!song) {
       return res.status(404).send({message:"No song found with the given ID"});
     }
-    res.send({message: "The song has been updated successfully", song });
+    res.send(song);
   } catch (error) {
     res.status(400).send(error);
   }
 });
+
+// Update a song
+router.patch('/update/:id', async (req, res) => {
+  try {
+    // Check if req.body is empty
+    if (Object.keys(req.body).length === 0) {
+      return res.status(400).send({ message: "Invalid input data!" });
+    }
+
+    // Attempt to update the song
+    const song = await Song.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+
+    // Check if the song was found
+    if (!song) {
+      return res.status(404).send({ message: "No song found with the given ID" });
+    }
+
+    // Successfully updated the song
+    res.send({ message: "The song has been updated successfully", song });
+  } catch (error) {
+    // Handle potential errors such as invalid ID or database errors
+    if (error.name === 'CastError') {
+      return res.status(400).send({ message: "Invalid ID format" });
+    }
+    res.status(500).send({ message: "An error occurred while updating the song", error: error.message });
+  }
+});
+
 
 // Delete a song
 router.delete('/delete/:id', async (req, res) => {
