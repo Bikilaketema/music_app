@@ -54,6 +54,56 @@ const SongImage = styled.img`
   margin-bottom: 12px;
 `;
 
+const EditButton = styled.button`
+  width: 30%;
+  margin: 5px;
+  background-color: #007BFF;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 15px;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+
+  &:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    background-color: #004494;
+    transform: translateY(0);
+  }
+`;
+
+const DeleteButton = styled.button`
+  width: 30%;
+  margin: 5px;
+  background-color: red;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 15px;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+
+  &:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    background-color: #004494;
+    transform: translateY(0);
+  }
+`;
+
+
+
 function SongList() {
   const dispatch = useDispatch();
   const songs = useSelector((state: RootState) => state.defaultReducer.songs);
@@ -79,6 +129,8 @@ function SongList() {
                 <p>Artist: {song.artist}</p>
                 <p>Album: {song.album}</p>
                 <p>Genre: {song.genre}</p>
+                <EditButton>Edit</EditButton>
+                <DeleteButton>Delete</DeleteButton>
               </SongItem>
             ))}
           </Grid>
