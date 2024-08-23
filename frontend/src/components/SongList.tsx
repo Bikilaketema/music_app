@@ -31,20 +31,19 @@ const MenuItem = styled.div`
 const Content = styled.div`
   flex-grow: 1;
   padding: 32px;
-  display: flex;
 `;
 
-const Column = styled.div`
-  flex: 1;
-  margin: 0 8px;
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+`;
+
+const SongItem = styled.div`
   padding: 16px;
   border: 1px solid #ddd;
   border-radius: 4px;
   background-color: #f9f9f9;
-`;
-
-const SongItem = styled.div`
-  margin-bottom: 16px;
 `;
 
 function SongList() {
@@ -64,7 +63,7 @@ function SongList() {
     switch (activeIndex) {
       case 0:
         return (
-          <Column>
+          <Grid>
             {songs.map((song) => (
               <SongItem key={song._id}>
                 <h3>{song.title}</h3>
@@ -73,49 +72,47 @@ function SongList() {
                 <p>Genre: {song.genre}</p>
               </SongItem>
             ))}
-          </Column>
+          </Grid>
         );
       case 1:
         return (
-          <Column>
+          <Grid>
             {songs.map((song) => (
               <SongItem key={song._id}>
                 <p>{song.title}</p>
               </SongItem>
             ))}
-          </Column>
+          </Grid>
         );
       case 2:
         return (
-          <Column>
+          <Grid>
             {songs.map((song) => (
               <SongItem key={song._id}>
                 <p>{song.artist}</p>
               </SongItem>
             ))}
-          </Column>
+          </Grid>
         );
       case 3:
         return (
-          <Column>
+          <Grid>
             {songs.map((song) => (
               <SongItem key={song._id}>
                 <p>{song.album}</p>
               </SongItem>
             ))}
-          </Column>
+          </Grid>
         );
       case 4:
         return (
-
-
-          <Column>
+          <Grid>
             {songs.map((song) => (
               <SongItem key={song._id}>
                 <p>{song.genre}</p>
               </SongItem>
             ))}
-          </Column>
+          </Grid>
         );
       default:
         return null;
