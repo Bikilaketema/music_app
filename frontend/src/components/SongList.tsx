@@ -2,9 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from '@emotion/styled';
-import { fetchSongsRequest } from '../redux/songSlice';
-import { RootState } from '../redux/store'
-import AddSongForm from './AddSongForm';
+import { getSongsFetch } from '../redux/actions';
+import { RootState } from '..';
 
 const Container = styled.div`
   display: flex;
@@ -32,72 +31,96 @@ const MenuItem = styled.div`
 const Content = styled.div`
   flex-grow: 1;
   padding: 32px;
+  display: flex;
+`;
+
+const Column = styled.div`
+  flex: 1;
+  margin: 0 8px;
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+`;
+
+const SongItem = styled.div`
+  margin-bottom: 16px;
 `;
 
 function SongList() {
   const dispatch = useDispatch();
-  const { artists, albums, genres, titles, loading } = useSelector(
-    (state: RootState) => state.songs
-  );
+  const songs = useSelector((state: RootState) => state.defaultReducer.songs);
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
-    dispatch(fetchSongsRequest());
+    dispatch(getSongsFetch());
   }, [dispatch]);
 
-  const sections = ['Artist', 'Album', 'Genre', 'Title','Add song'];
+  const sections = ['Songs', 'Title', 'Artist', 'Album', 'Genre'];
 
-// src/components/SongList.tsx
+  const renderContent = () => {
+    if (!songs || songs.length === 0) return <div>No songs available.</div>;
 
-const renderContent = () => {
-  if (loading) return <div>Loading...</div>;
-
-  // Add a check to ensure the data arrays are defined
-  if (!artists || !albums || !genres || !titles) {
-    return <div>No data available.</div>;
-  }
-
-  switch (activeIndex) {
-    case 0:
-      return (
-        <ul>
-          {artists.map((artist: string, index: number) => (
-            <li key={index}>{artist}</li>
-          ))}
-        </ul>
-      );
-    case 1:
-      return (
-        <ul>
-          {albums.map((album: string, index: number) => (
-            <li key={index}>{album}</li>
-          ))}
-        </ul>
-      );
-    case 2:
-      return (
-        <ul>
-          {genres.map((genre: string, index: number) => (
-            <li key={index}>{genre}</li>
-          ))}
-        </ul>
-      );
-    case 3:
-      return (
-        <ul>
-          {titles.map((title: string, index: number) => (
-            <li key={index}>{title}</li>
-          ))}
-        </ul>
-      );
+    switch (activeIndex) {
+      case 0:
+        return (
+          <Column>
+            {songs.map((song) => (
+              <SongItem key={song._id}>
+                <h3>{song.title}</h3>
+                <p>Artist: {song.artist}</p>
+                <p>Album: {song.album}</p>
+                <p>Genre: {song.genre}</p>
+              </SongItem>
+            ))}
+          </Column>
+        );
+      case 1:
+        return (
+          <Column>
+            {songs.map((song) => (
+              <SongItem key={song._id}>
+                <p>{song.title}</p>
+              </SongItem>
+            ))}
+          </Column>
+        );
+      case 2:
+        return (
+          <Column>
+            {songs.map((song) => (
+              <SongItem key={song._id}>
+                <p>{song.artist}</p>
+              </SongItem>
+            ))}
+          </Column>
+        );
+      case 3:
+        return (
+          <Column>
+            {songs.map((song) => (
+              <SongItem key={song._id}>
+                <p>{song.album}</p>
+              </SongItem>
+            ))}
+          </Column>
+        );
       case 4:
         return (
-          <AddSongForm/>
+
+
+          <Column>
+            {songs.map((song) => (
+              <SongItem key={song._id}>
+                <p>{song.genre}</p>
+              </SongItem>
+            ))}
+          </Column>
         );
-    default:
-      return null;
-  }
-};
+      default:
+        return null;
+    }
+  };
 
   return (
     <Container>

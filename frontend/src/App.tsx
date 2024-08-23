@@ -1,13 +1,19 @@
 import React from 'react';
-import './App.css';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Header from './components/Header';
 import SongList from './components/SongList';
+import AddSongForm from './components/AddSongForm';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <SongList />
-    </div>
+    <Router>
+      <Header />
+      <Routes>
+        <Route path="/" element={<SongList />} />
+        <Route path="/add-song" element={<AddSongForm />} />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;

@@ -1,34 +1,20 @@
-import { call, put } from 'redux-saga/effects';
-import axios, { AxiosResponse } from 'axios';
-import { fetchSongsSuccess, fetchSongsFailure } from './songSlice';
+import { takeEvery, call, put } from "@redux-saga/core/effects";
+import { GET_SONGS_FETCH, GET_SONGS_SUCCESS } from "./actions";
 
-interface ApiResponse {
-  songs: Song[];
+function songsFetch() {
+  return fetch("http://localhost:5000/api/songs/allsongs").then((response) =>
+    response.json()
+  );
 }
 
-interface Song {
-  artist: string;
-  album: string;
-  genre: string;
-  title: string;
+function* workGetSongsFetch() {
+  const response = yield call(songsFetch);
+  const songs = response.songs; // Extract the songs array from the response
+  yield put({ type: GET_SONGS_SUCCESS, songs });
 }
 
-function* fetchSongsSaga(): Generator<any, void, AxiosResponse<ApiResponse>> {
-  try {
-    const response: AxiosResponse<ApiResponse> = yield call(axios.get, 'http://localhost:5000/api/songs/allsongs');
-    const songs = response.data.songs;
-
-    const data = {
-      artists: songs.map(song => song.artist),
-      albums: songs.map(song => song.album),
-      genres: songs.map(song => song.genre),
-      titles: songs.map(song => song.title),
-    };
-
-    yield put(fetchSongsSuccess(data));
-  } catch (error) {
-    yield put(fetchSongsFailure());
-  }
+function* fetchSongsSaga() {
+  yield takeEvery(GET_SONGS_FETCH, workGetSongsFetch);
 }
 
 export default fetchSongsSaga;
