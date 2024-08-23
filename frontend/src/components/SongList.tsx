@@ -44,6 +44,14 @@ const SongItem = styled.div`
   border: 1px solid #ddd;
   border-radius: 4px;
   background-color: #f9f9f9;
+  text-align: center;
+`;
+
+const SongImage = styled.img`
+  width: 100%;
+  height: 200px;
+  border-radius: 4px;
+  margin-bottom: 12px;
 `;
 
 function SongList() {
@@ -66,6 +74,7 @@ function SongList() {
           <Grid>
             {songs.map((song) => (
               <SongItem key={song._id}>
+                <SongImage src={song.image} alt="album art" />
                 <h3>{song.title}</h3>
                 <p>Artist: {song.artist}</p>
                 <p>Album: {song.album}</p>
@@ -79,7 +88,7 @@ function SongList() {
           <Grid>
             {songs.map((song) => (
               <SongItem key={song._id}>
-                <p>{song.title}</p>
+                <h4>{song.title}</h4>
               </SongItem>
             ))}
           </Grid>
@@ -89,7 +98,7 @@ function SongList() {
           <Grid>
             {songs.map((song) => (
               <SongItem key={song._id}>
-                <p>{song.artist}</p>
+                <h4>{song.artist}</h4>
               </SongItem>
             ))}
           </Grid>
@@ -99,7 +108,7 @@ function SongList() {
           <Grid>
             {songs.map((song) => (
               <SongItem key={song._id}>
-                <p>{song.album}</p>
+                <h4>{song.album}</h4>
               </SongItem>
             ))}
           </Grid>
@@ -109,7 +118,7 @@ function SongList() {
           <Grid>
             {songs.map((song) => (
               <SongItem key={song._id}>
-                <p>{song.genre}</p>
+                <h4>{song.genre}</h4>
               </SongItem>
             ))}
           </Grid>

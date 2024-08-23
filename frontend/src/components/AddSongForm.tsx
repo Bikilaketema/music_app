@@ -18,7 +18,7 @@ const FormContainer = styled.div`
   ${formStyles}
   width: 100%;
   max-width: 600px;
-  margin: 0 auto;
+  margin: 100px auto;
   padding: 16px;
   background-color: #f9f9f9;
   border-radius: 8px;
@@ -55,6 +55,7 @@ const AddSongForm: React.FC = () => {
   const [artist, setArtist] = useState('');
   const [album, setAlbum] = useState('');
   const [genre, setGenre] = useState('');
+  const [image, setImage] = useState('');
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -64,6 +65,7 @@ const AddSongForm: React.FC = () => {
       artist,
       album,
       genre,
+      image
     };
 
     try {
@@ -74,6 +76,7 @@ const AddSongForm: React.FC = () => {
       setArtist('');
       setAlbum('');
       setGenre('');
+      setImage('');
     } catch (error) {
       console.error('Error adding song:', error);
       alert('Failed to add song.');
@@ -106,6 +109,12 @@ const AddSongForm: React.FC = () => {
           placeholder="Genre"
           value={genre}
           onChange={(e) => setGenre(e.target.value)}
+        />
+        <Input
+          type="text"
+          placeholder="album art link"
+          value={image}
+          onChange={(e) => setImage(e.target.value)}
         />
         <Button type="submit">Add Song</Button>
       </FormElement>
