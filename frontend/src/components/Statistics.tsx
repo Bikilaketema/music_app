@@ -131,7 +131,7 @@ const Statistics: React.FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/songs/stats');
+                const response = await axios.get(`${process.env.REACT_APP_API_KEY}/api/songs/stats`);
                 setData(response.data);
             } catch (error) {
                 console.error('Error fetching statistics data:', error);

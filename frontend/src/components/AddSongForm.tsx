@@ -103,7 +103,7 @@ const AddSongForm: React.FC = () => {
     };
 
     try {
-      await axios.post('http://localhost:5000/api/songs/newsong', songData);
+      await axios.post(`${process.env.REACT_APP_API_KEY}/api/songs/newsong`, songData);
       alert('Song added successfully.');
       // Reset form fields
       setTitle('');

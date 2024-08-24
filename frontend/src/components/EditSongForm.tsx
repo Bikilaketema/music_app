@@ -7,11 +7,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 
 // Define custom styles using Styled System
 const formStyles = system({
-    padding: { property: 'padding', scale: 'space' },
-    margin: { property: 'margin', scale: 'space' },
-    borderRadius: { property: 'borderRadius', scale: 'radii' },
-    boxShadow: { property: 'boxShadow', scale: 'shadows' },
-    backgroundColor: { property: 'backgroundColor', scale: 'colors' },
+  padding: { property: 'padding', scale: 'space' },
+  margin: { property: 'margin', scale: 'space' },
+  borderRadius: { property: 'borderRadius', scale: 'radii' },
+  boxShadow: { property: 'boxShadow', scale: 'shadows' },
+  backgroundColor: { property: 'backgroundColor', scale: 'colors' },
 });
 
 const FormContainer = styled.div`
@@ -113,139 +113,139 @@ const Button = styled.button`
 `;
 
 const EditSongForm: React.FC = () => {
-    const { id } = useParams<{ id: string }>();
-    const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
 
-    const [title, setTitle] = useState('');
-    const [artist, setArtist] = useState('');
-    const [album, setAlbum] = useState('');
-    const [genre, setGenre] = useState('');
-    const [image, setImage] = useState('');
+  const [title, setTitle] = useState('');
+  const [artist, setArtist] = useState('');
+  const [album, setAlbum] = useState('');
+  const [genre, setGenre] = useState('');
+  const [image, setImage] = useState('');
 
-    const [originalData, setOriginalData] = useState({
-        title: '',
-        artist: '',
-        album: '',
-        genre: '',
-        image: ''
-    });
+  const [originalData, setOriginalData] = useState({
+    title: '',
+    artist: '',
+    album: '',
+    genre: '',
+    image: ''
+  });
 
-    useEffect(() => {
-        const fetchSongData = async () => {
-            try {
-                const response = await axios.get(`http://localhost:5000/api/songs/get/${id}`);
-                const song = response.data;
-                setTitle(song.title);
-                setArtist(song.artist);
-                setAlbum(song.album);
-                setGenre(song.genre);
-                setImage(song.image);
-                setOriginalData({
-                    title: song.title,
-                    artist: song.artist,
-                    album: song.album,
-                    genre: song.genre,
-                    image: song.image
-                });
-            } catch (error) {
-                console.error('Error fetching song data:', error);
-                alert('Failed to load song data.');
-            }
-        };
-
-        fetchSongData();
-    }, [id]);
-
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-
-        const updatedSongData = {
-            title,
-            artist,
-            album,
-            genre,
-            image,
-        };
-
-        const isNoChange = Object.keys(originalData).every(key => originalData[key] === updatedSongData[key]);
-
-        if (isNoChange) {
-            alert('No changes have been made!');
-            return;
-        }
-
-        try {
-            await axios.patch(`http://localhost:5000/api/songs/update/${id}`, updatedSongData);
-            alert('Song updated successfully.');
-            navigate('/');
-        } catch (error) {
-            console.error('Error updating song:', error);
-            alert('Failed to update song.');
-        }
+  useEffect(() => {
+    const fetchSongData = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_API_KEY}/api/songs/get/${id}`);
+        const song = response.data;
+        setTitle(song.title);
+        setArtist(song.artist);
+        setAlbum(song.album);
+        setGenre(song.genre);
+        setImage(song.image);
+        setOriginalData({
+          title: song.title,
+          artist: song.artist,
+          album: song.album,
+          genre: song.genre,
+          image: song.image
+        });
+      } catch (error) {
+        console.error('Error fetching song data:', error);
+        alert('Failed to load song data.');
+      }
     };
 
-    return (
-        <FormContainer>
-            <FormElement onSubmit={handleSubmit}>
-                <ElementContainer>
-                    <Label>Title</Label>
-                    <Input
-                        type="text"
-                        placeholder="Title"
-                        required
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                    />
-                </ElementContainer>
+    fetchSongData();
+  }, [id]);
 
-                <ElementContainer>
-                    <Label>Artist</Label>
-                    <Input
-                        type="text"
-                        placeholder="Artist"
-                        required
-                        value={artist}
-                        onChange={(e) => setArtist(e.target.value)}
-                    />
-                </ElementContainer>
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
-                <ElementContainer>
-                    <Label>Album</Label>
-                    <Input
-                        type="text"
-                        placeholder="Album"
-                        required
-                        value={album}
-                        onChange={(e) => setAlbum(e.target.value)}
-                    />
-                </ElementContainer>
+    const updatedSongData = {
+      title,
+      artist,
+      album,
+      genre,
+      image,
+    };
 
-                <ElementContainer>
-                    <Label>Genre</Label>
-                    <Input
-                        type="text"
-                        placeholder="Genre"
-                        required
-                        value={genre}
-                        onChange={(e) => setGenre(e.target.value)}
-                    />
-                </ElementContainer>
+    const isNoChange = Object.keys(originalData).every(key => originalData[key] === updatedSongData[key]);
 
-                <ElementContainer>
-                    <Label>Album art link</Label>
-                    <Input
-                        type="text"
-                        placeholder="Album art link"
-                        required
-                        value={image}
-                        onChange={(e) => setImage(e.target.value)}
-                    />
-                </ElementContainer>
+    if (isNoChange) {
+      alert('No changes have been made!');
+      return;
+    }
 
-                <Button type="submit">Update Song</Button>
-            </FormElement>
-        </FormContainer>
-    );
+    try {
+      await axios.patch(`${process.env.REACT_APP_API_KEY}/api/songs/update/${id}`, updatedSongData);
+      alert('Song updated successfully.');
+      navigate('/');
+    } catch (error) {
+      console.error('Error updating song:', error);
+      alert('Failed to update song.');
+    }
+  };
+
+  return (
+    <FormContainer>
+      <FormElement onSubmit={handleSubmit}>
+        <ElementContainer>
+          <Label>Title</Label>
+          <Input
+            type="text"
+            placeholder="Title"
+            required
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        </ElementContainer>
+
+        <ElementContainer>
+          <Label>Artist</Label>
+          <Input
+            type="text"
+            placeholder="Artist"
+            required
+            value={artist}
+            onChange={(e) => setArtist(e.target.value)}
+          />
+        </ElementContainer>
+
+        <ElementContainer>
+          <Label>Album</Label>
+          <Input
+            type="text"
+            placeholder="Album"
+            required
+            value={album}
+            onChange={(e) => setAlbum(e.target.value)}
+          />
+        </ElementContainer>
+
+        <ElementContainer>
+          <Label>Genre</Label>
+          <Input
+            type="text"
+            placeholder="Genre"
+            required
+            value={genre}
+            onChange={(e) => setGenre(e.target.value)}
+          />
+        </ElementContainer>
+
+        <ElementContainer>
+          <Label>Album art link</Label>
+          <Input
+            type="text"
+            placeholder="Album art link"
+            required
+            value={image}
+            onChange={(e) => setImage(e.target.value)}
+          />
+        </ElementContainer>
+
+        <Button type="submit">Update Song</Button>
+      </FormElement>
+    </FormContainer>
+  );
 };
 
 export default EditSongForm;

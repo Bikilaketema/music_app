@@ -184,7 +184,7 @@ function SongList() {
   const handleDeleteClick = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this song?')) {
       try {
-        await axios.delete(`http://localhost:5000/api/songs/delete/${id}`);
+        await axios.delete(`${process.env.REACT_APP_API_KEY}/api/songs/delete/${id}`);
         alert('Song deleted successfully.');
         dispatch(getSongsFetch());
       } catch (error) {

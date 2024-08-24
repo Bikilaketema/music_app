@@ -2,8 +2,8 @@ import { takeEvery, call, put } from "@redux-saga/core/effects";
 import { GET_SONGS_FETCH, GET_SONGS_SUCCESS } from "./actions";
 
 function songsFetch() {
-  return fetch("http://localhost:5000/api/songs/allsongs").then((response) =>
-    response.json()
+  return fetch(`${process.env.REACT_APP_API_KEY}/api/songs/allsongs`).then(
+    (response) => response.json()
   );
 }
 
