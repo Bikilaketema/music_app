@@ -166,6 +166,7 @@ function SongList() {
           <Grid>
             {songs.map((song) => (
               <SongItem key={song._id}>
+                <SongImage src={song.image} alt="album art" />
                 <h4>{song.title}</h4>
               </SongItem>
             ))}
@@ -176,6 +177,7 @@ function SongList() {
           <Grid>
             {songs.map((song) => (
               <SongItem key={song._id}>
+                <SongImage src={song.image} alt="album art" />
                 <h4>{song.artist}</h4>
               </SongItem>
             ))}
@@ -186,6 +188,7 @@ function SongList() {
           <Grid>
             {songs.map((song) => (
               <SongItem key={song._id}>
+                <SongImage src={song.image} alt="album art" />
                 <h4>{song.album}</h4>
               </SongItem>
             ))}
@@ -196,6 +199,7 @@ function SongList() {
           <Grid>
             {songs.map((song) => (
               <SongItem key={song._id}>
+                <SongImage src={song.image} alt="album art" />
                 <h4>{song.genre}</h4>
               </SongItem>
             ))}
