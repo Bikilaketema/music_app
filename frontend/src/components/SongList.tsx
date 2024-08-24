@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from '@emotion/styled';
 import { getSongsFetch } from '../redux/actions';
 import { RootState } from '..';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Container = styled.div`
   display: flex;
@@ -108,12 +110,31 @@ function SongList() {
   const dispatch = useDispatch();
   const songs = useSelector((state: RootState) => state.defaultReducer.songs);
   const [activeIndex, setActiveIndex] = useState(0);
+  const navigate = useNavigate(); // Initialize navigate
 
   useEffect(() => {
     dispatch(getSongsFetch());
   }, [dispatch]);
 
   const sections = ['Songs', 'Title', 'Artist', 'Album', 'Genre'];
+
+  const handleEditClick = (id: string) => {
+    navigate(`/edit-song/${id}`);
+  };
+
+  const handleDeleteClick = async (id: string) => {
+    if (window.confirm('Are you sure you want to delete this song?')) {
+      try {
+        await axios.delete(`http://localhost:5000/api/songs/delete/${id}`);
+        alert('Song deleted successfully.');
+        dispatch(getSongsFetch()); // Refresh the song list after deletion
+      } catch (error) {
+        console.error('Error deleting song:', error);
+        alert('Failed to delete song.');
+      }
+    }
+  };
+
 
   const renderContent = () => {
     if (!songs || songs.length === 0) return <div>No songs available.</div>;
@@ -129,8 +150,13 @@ function SongList() {
                 <p>Artist: {song.artist}</p>
                 <p>Album: {song.album}</p>
                 <p>Genre: {song.genre}</p>
-                <EditButton>Edit</EditButton>
-                <DeleteButton>Delete</DeleteButton>
+                <EditButton onClick={() => handleEditClick(song._id)}>
+                  Edit
+                </EditButton>
+                <DeleteButton onClick={() => handleDeleteClick(song._id)}>
+                  Delete
+                </DeleteButton>
+
               </SongItem>
             ))}
           </Grid>
