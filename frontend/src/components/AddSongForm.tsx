@@ -89,30 +89,35 @@ const AddSongForm: React.FC = () => {
         <Input
           type="text"
           placeholder="Title"
+          required={true}
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
         <Input
           type="text"
           placeholder="Artist"
+          required={true}
           value={artist}
           onChange={(e) => setArtist(e.target.value)}
         />
         <Input
           type="text"
           placeholder="Album"
+          required={true}
           value={album}
           onChange={(e) => setAlbum(e.target.value)}
         />
         <Input
           type="text"
           placeholder="Genre"
+          required={true}
           value={genre}
           onChange={(e) => setGenre(e.target.value)}
         />
         <Input
           type="text"
           placeholder="album art link"
+          required={true}
           value={image}
           onChange={(e) => setImage(e.target.value)}
         />
