@@ -18,11 +18,17 @@ const FormContainer = styled.div`
   ${formStyles}
   width: 100%;
   max-width: 600px;
-  margin: 100px auto;
+  margin: 16px auto; // Adjust margin for small screens
   padding: 16px;
-  background-color: #f9f9f9;
+  background-color: #007bff; // Match EditSongForm background color
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 600px) {
+    padding: 12px;
+    margin: 8px auto; // Reduce margin for very small screens
+    width: 90%;
+  }
 `;
 
 const FormElement = styled.form`
@@ -31,22 +37,50 @@ const FormElement = styled.form`
   gap: 16px;
 `;
 
+const ElementContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  border: 2px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  padding: 5px;
+  background-color: #007bff; // Match EditSongForm background color
+`;
+
 const Input = styled.input`
   padding: 8px;
   border: 1px solid #ddd;
   border-radius: 4px;
+  font-size: 16px;
+
+  @media (max-width: 600px) {
+    padding: 6px;
+    font-size: 14px; // Adjust font size for small screens
+  }
+`;
+
+const Label = styled.label`
+  color: white;
+  font-size: 14px; // Adjust font size for better readability
+  margin-bottom: 8px;
 `;
 
 const Button = styled.button`
   padding: 12px;
-  background-color: #007bff;
+  background-color: #0056b3; // Darker shade for consistency with EditSongForm
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  
+  font-size: 16px;
+
   &:hover {
-    background-color: #0056b3;
+    background-color: #004494;
+  }
+
+  @media (max-width: 600px) {
+    padding: 10px;
+    font-size: 14px; // Adjust font size for small screens
   }
 `;
 
@@ -86,41 +120,56 @@ const AddSongForm: React.FC = () => {
   return (
     <FormContainer>
       <FormElement onSubmit={handleSubmit}>
-        <Input
-          type="text"
-          placeholder="Title"
-          required={true}
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <Input
-          type="text"
-          placeholder="Artist"
-          required={true}
-          value={artist}
-          onChange={(e) => setArtist(e.target.value)}
-        />
-        <Input
-          type="text"
-          placeholder="Album"
-          required={true}
-          value={album}
-          onChange={(e) => setAlbum(e.target.value)}
-        />
-        <Input
-          type="text"
-          placeholder="Genre"
-          required={true}
-          value={genre}
-          onChange={(e) => setGenre(e.target.value)}
-        />
-        <Input
-          type="text"
-          placeholder="album art link"
-          required={true}
-          value={image}
-          onChange={(e) => setImage(e.target.value)}
-        />
+        <ElementContainer>
+          <Label>Title</Label>
+          <Input
+            type="text"
+            placeholder="Title"
+            required={true}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        </ElementContainer>
+        <ElementContainer>
+          <Label>Artist</Label>
+          <Input
+            type="text"
+            placeholder="Artist"
+            required={true}
+            value={artist}
+            onChange={(e) => setArtist(e.target.value)}
+          />
+        </ElementContainer>
+        <ElementContainer>
+          <Label>Album</Label>
+          <Input
+            type="text"
+            placeholder="Album"
+            required={true}
+            value={album}
+            onChange={(e) => setAlbum(e.target.value)}
+          />
+        </ElementContainer>
+        <ElementContainer>
+          <Label>Genre</Label>
+          <Input
+            type="text"
+            placeholder="Genre"
+            required={true}
+            value={genre}
+            onChange={(e) => setGenre(e.target.value)}
+          />
+        </ElementContainer>
+        <ElementContainer>
+          <Label>Album art link</Label>
+          <Input
+            type="text"
+            placeholder="Album art link"
+            required={true}
+            value={image}
+            onChange={(e) => setImage(e.target.value)}
+          />
+        </ElementContainer>
         <Button type="submit">Add Song</Button>
       </FormElement>
     </FormContainer>

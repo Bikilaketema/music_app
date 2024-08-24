@@ -12,33 +12,75 @@ const Container = styled.div`
   flex-direction: column;
   height: 100vh;
   padding: 16px;
+  box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    padding: 8px;
+  }
 `;
 
 const TopMenu = styled.div`
   display: flex;
   justify-content: space-around;
-  padding: 16px;
+  padding:  16px;
   background-color: #f0f0f0;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 768px) {
+    flex-wrap: nowrap;
+  }
 `;
 
 const MenuItem = styled.div`
   font-size: 20px;
   cursor: pointer;
+  padding: 8px;
+  transition: color 0.3s ease;
+
   &:hover {
     color: #007BFF;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 16px;
   }
 `;
 
 const Content = styled.div`
   flex-grow: 1;
   padding: 32px;
+
+  @media (max-width: 768px) {
+    padding: 16px;
+  }
+`;
+
+const MainGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+
+  @media (max-width: 1200px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 16px;
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const SongItem = styled.div`
@@ -47,27 +89,41 @@ const SongItem = styled.div`
   border-radius: 4px;
   background-color: #f9f9f9;
   text-align: center;
+  box-sizing: border-box;
+
+  @media (max-width: 600px) {
+    padding: 12px;
+  }
 `;
 
 const SongImage = styled.img`
   width: 100%;
   height: 200px;
+  max-height: 200px;
   border-radius: 4px;
   margin-bottom: 12px;
 `;
 
-const EditButton = styled.button`
-  width: 30%;
-  margin: 5px;
+const Button = styled.button`
+  width: 48%;
+  margin: 4px;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 15px;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+
+  @media (max-width: 600px) {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+`;
+
+const EditButton = styled(Button)`
   background-color: #007BFF;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 15px;
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
 
   &:hover {
     background-color: #0056b3;
@@ -80,37 +136,40 @@ const EditButton = styled.button`
   }
 `;
 
-const DeleteButton = styled.button`
-  width: 30%;
-  margin: 5px;
+const DeleteButton = styled(Button)`
   background-color: red;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 15px;
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
 
   &:hover {
-    background-color: #0056b3;
+    background-color: #d43f3a;
     transform: translateY(-2px);
   }
 
   &:active {
-    background-color: #004494;
+    background-color: #c9302c;
     transform: translateY(0);
   }
 `;
 
+const SongDetailsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 200px;
+  gap: 2px;
+`;
 
+const ButtonsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100px;
+  margin-top: 10px;
+`;
 
 function SongList() {
   const dispatch = useDispatch();
   const songs = useSelector((state: RootState) => state.defaultReducer.songs);
   const [activeIndex, setActiveIndex] = useState(0);
-  const navigate = useNavigate(); // Initialize navigate
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getSongsFetch());
@@ -127,7 +186,7 @@ function SongList() {
       try {
         await axios.delete(`http://localhost:5000/api/songs/delete/${id}`);
         alert('Song deleted successfully.');
-        dispatch(getSongsFetch()); // Refresh the song list after deletion
+        dispatch(getSongsFetch());
       } catch (error) {
         console.error('Error deleting song:', error);
         alert('Failed to delete song.');
@@ -135,31 +194,29 @@ function SongList() {
     }
   };
 
-
   const renderContent = () => {
     if (!songs || songs.length === 0) return <div>No songs available.</div>;
 
     switch (activeIndex) {
       case 0:
         return (
-          <Grid>
+          <MainGrid>
             {songs.map((song) => (
               <SongItem key={song._id}>
                 <SongImage src={song.image} alt="album art" />
-                <h3>{song.title}</h3>
-                <p>Artist: {song.artist}</p>
-                <p>Album: {song.album}</p>
-                <p>Genre: {song.genre}</p>
-                <EditButton onClick={() => handleEditClick(song._id)}>
-                  Edit
-                </EditButton>
-                <DeleteButton onClick={() => handleDeleteClick(song._id)}>
-                  Delete
-                </DeleteButton>
-
+                <SongDetailsContainer>
+                  <h3>{song.title}</h3>
+                  <p>Artist: {song.artist}</p>
+                  <p>Album: {song.album}</p>
+                  <p>Genre: {song.genre}</p>
+                </SongDetailsContainer>
+                <ButtonsContainer>
+                  <EditButton onClick={() => handleEditClick(song._id)}>Edit</EditButton>
+                  <DeleteButton onClick={() => handleDeleteClick(song._id)}>Delete</DeleteButton>
+                </ButtonsContainer>
               </SongItem>
             ))}
-          </Grid>
+          </MainGrid>
         );
       case 1:
         return (

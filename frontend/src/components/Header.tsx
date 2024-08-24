@@ -19,9 +19,15 @@ const HeaderContainer = styled('header')(
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
+    maxWidth: '100%',
     backgroundColor: '#282c34',
-    padding: '16px',
+    paddingBottom: '16px',
+    paddingTop: '16px',
     boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+    '@media (max-width: 768px)': {
+      paddingBottom: '12px',
+      paddingTop: '12px'
+    },
   },
   space,
   color,
@@ -36,6 +42,10 @@ const Nav = styled('nav')(
     display: 'flex',
     justifyContent: 'space-around',
     width: '100%',
+    '@media (max-width: 768px)': {
+      flexDirection: 'column',
+      alignItems: 'center',
+    },
   },
   space,
   color,
@@ -49,6 +59,11 @@ const NavLink = styled(Link)(
     textDecoration: 'none',
     color: '#ffffff',
     fontSize: '18px',
+    margin: '0 12px',
+    '@media (max-width: 768px)': {
+      fontSize: '16px',
+      margin: '8px 0',
+    },
     '&:hover': {
       color: '#61dafb',
     },

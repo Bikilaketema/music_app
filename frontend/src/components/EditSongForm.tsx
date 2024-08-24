@@ -18,11 +18,17 @@ const FormContainer = styled.div`
   ${formStyles}
   width: 100%;
   max-width: 600px;
-  margin: 100px auto;
+  margin: 16px auto; // Adjust margin for small screens
   padding: 16px;
-  background-color: #f9f9f9;
+  background-color: #007bff; // Match EditSongForm background color
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 600px) {
+    padding: 12px;
+    width: 90%;
+    margin: 8px auto; // Reduce margin for very small screens
+  }
 `;
 
 const FormElement = styled.form`
@@ -32,36 +38,77 @@ const FormElement = styled.form`
 `;
 
 const ElementContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    border: 2px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    padding: 5px;
-    background-color: #007bff;`;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid #ddd; // Match AddSongForm border color
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  padding: 5px;
+  background-color: #007bff; // Match AddSongForm background color
+
+  @media (max-width: 768px) {
+    padding: 6px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 4px;
+  }
+`;
 
 const Input = styled.input`
   padding: 8px;
   border: 1px solid #ddd;
   border-radius: 4px;
+  font-size: 16px;
+
+  @media (max-width: 768px) {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 8px;
+    font-size: 12px;
+  }
 `;
 
 const Label = styled.label`
-    color: white;
-    text-size: 10px;
-    margin: 5px;
+  color: white;
+  font-size: 16px;
+  margin: 4px 0;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+    margin: 2px 0;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+    margin: 1px 0;
+  }
 `;
 
 const Button = styled.button`
   padding: 12px;
-  background-color: #007bff;
+  background-color: #0056b3; // Darker shade for consistency with AddSongForm
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  
+  font-size: 16px;
+
   &:hover {
-    background-color: #0056b3;
+    background-color: #004494;
+  }
+
+  @media (max-width: 768px) {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 8px;
+    font-size: 12px;
   }
 `;
 
@@ -84,7 +131,6 @@ const EditSongForm: React.FC = () => {
     });
 
     useEffect(() => {
-        // Fetch the existing song data by ID
         const fetchSongData = async () => {
             try {
                 const response = await axios.get(`http://localhost:5000/api/songs/get/${id}`);
@@ -121,20 +167,17 @@ const EditSongForm: React.FC = () => {
             image,
         };
 
-        // Check if any field has changed
         const isNoChange = Object.keys(originalData).every(key => originalData[key] === updatedSongData[key]);
 
         if (isNoChange) {
             alert('No changes have been made!');
-            return; // Exit the function to prevent the PATCH request
+            return;
         }
-
-
 
         try {
             await axios.patch(`http://localhost:5000/api/songs/update/${id}`, updatedSongData);
             alert('Song updated successfully.');
-            navigate('/'); // Redirect to home page after successful update
+            navigate('/');
         } catch (error) {
             console.error('Error updating song:', error);
             alert('Failed to update song.');
@@ -149,7 +192,7 @@ const EditSongForm: React.FC = () => {
                     <Input
                         type="text"
                         placeholder="Title"
-                        required={true}
+                        required
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                     />
@@ -160,7 +203,7 @@ const EditSongForm: React.FC = () => {
                     <Input
                         type="text"
                         placeholder="Artist"
-                        required={true}
+                        required
                         value={artist}
                         onChange={(e) => setArtist(e.target.value)}
                     />
@@ -171,7 +214,7 @@ const EditSongForm: React.FC = () => {
                     <Input
                         type="text"
                         placeholder="Album"
-                        required={true}
+                        required
                         value={album}
                         onChange={(e) => setAlbum(e.target.value)}
                     />
@@ -182,8 +225,8 @@ const EditSongForm: React.FC = () => {
                     <Input
                         type="text"
                         placeholder="Genre"
+                        required
                         value={genre}
-                        required={true}
                         onChange={(e) => setGenre(e.target.value)}
                     />
                 </ElementContainer>
@@ -192,8 +235,8 @@ const EditSongForm: React.FC = () => {
                     <Label>Album art link</Label>
                     <Input
                         type="text"
-                        placeholder="album art link"
-                        required={true}
+                        placeholder="Album art link"
+                        required
                         value={image}
                         onChange={(e) => setImage(e.target.value)}
                     />
