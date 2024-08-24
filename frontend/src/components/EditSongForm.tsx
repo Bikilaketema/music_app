@@ -1,5 +1,4 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { system } from 'styled-system';
 import React, { useState, useEffect } from 'react';
