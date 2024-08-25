@@ -157,3 +157,7 @@ export const ButtonsContainer = styled.div`
   height: 100px;
   margin-top: 10px;
 `;
+
+export const LoadingText = styled.h2`
+  text-align: center;
+`;

@@ -5,7 +5,7 @@ import { getSongsFetch } from '../redux/actions';
 import { RootState } from '..';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Grid, MenuItem, Content, Container, TopMenu, MainGrid, SongImage, SongDetailsContainer, SongItem, ButtonsContainer, DeleteButton, EditButton } from '../styles/SongList.style';
+import { LoadingText, Grid, MenuItem, Content, Container, TopMenu, MainGrid, SongImage, SongDetailsContainer, SongItem, ButtonsContainer, DeleteButton, EditButton } from '../styles/SongList.style';
 
 
 function SongList() {
@@ -38,7 +38,7 @@ function SongList() {
   };
 
   const renderContent = () => {
-    if (!songs || songs.length === 0) return <div>No songs available.</div>;
+    if (!songs || songs.length === 0) return <LoadingText>Loading...</LoadingText>;
 
     switch (activeIndex) {
       case 0:
