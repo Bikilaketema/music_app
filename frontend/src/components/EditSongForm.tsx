@@ -1,116 +1,15 @@
 /** @jsxImportSource @emotion/react */
-import styled from '@emotion/styled';
-import { system } from 'styled-system';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
-
-// Define custom styles using Styled System
-const formStyles = system({
-  padding: { property: 'padding', scale: 'space' },
-  margin: { property: 'margin', scale: 'space' },
-  borderRadius: { property: 'borderRadius', scale: 'radii' },
-  boxShadow: { property: 'boxShadow', scale: 'shadows' },
-  backgroundColor: { property: 'backgroundColor', scale: 'colors' },
-});
-
-const FormContainer = styled.div`
-  ${formStyles}
-  width: 100%;
-  max-width: 600px;
-  margin: 16px auto; // Adjust margin for small screens
-  padding: 16px;
-  background-color: #007bff; // Match EditSongForm background color
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-  @media (max-width: 600px) {
-    padding: 12px;
-    width: 90%;
-    margin: 8px auto; // Reduce margin for very small screens
-  }
-`;
-
-const FormElement = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-`;
-
-const ElementContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  border: 2px solid #ddd; // Match AddSongForm border color
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border-radius: 5px;
-  padding: 5px;
-  background-color: #007bff; // Match AddSongForm background color
-
-  @media (max-width: 768px) {
-    padding: 6px;
-  }
-
-  @media (max-width: 480px) {
-    padding: 4px;
-  }
-`;
-
-const Input = styled.input`
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 16px;
-
-  @media (max-width: 768px) {
-    padding: 10px;
-    font-size: 14px;
-  }
-
-  @media (max-width: 480px) {
-    padding: 8px;
-    font-size: 12px;
-  }
-`;
-
-const Label = styled.label`
-  color: white;
-  font-size: 16px;
-  margin: 4px 0;
-
-  @media (max-width: 768px) {
-    font-size: 14px;
-    margin: 2px 0;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 12px;
-    margin: 1px 0;
-  }
-`;
-
-const Button = styled.button`
-  padding: 12px;
-  background-color: #0056b3; // Darker shade for consistency with AddSongForm
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-
-  &:hover {
-    background-color: #004494;
-  }
-
-  @media (max-width: 768px) {
-    padding: 10px;
-    font-size: 14px;
-  }
-
-  @media (max-width: 480px) {
-    padding: 8px;
-    font-size: 12px;
-  }
-`;
+import {
+  FormContainer,
+  FormElement,
+  ElementContainer,
+  Input,
+  Label,
+  Button
+} from '../styles/Form.style';
 
 const EditSongForm: React.FC = () => {
   const { id } = useParams<{ id: string }>();

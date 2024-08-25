@@ -1,10 +1,11 @@
 import { takeEvery, call, put } from "@redux-saga/core/effects";
 import { GET_SONGS_FETCH, GET_SONGS_SUCCESS } from "./actions";
 
-function songsFetch() {
-  return fetch(`${process.env.REACT_APP_API_KEY}/api/songs/allsongs`).then(
-    (response) => response.json()
+async function songsFetch() {
+  const response = await fetch(
+    `${process.env.REACT_APP_API_KEY}/api/songs/allsongs`
   );
+  return await response.json();
 }
 
 function* workGetSongsFetch() {
