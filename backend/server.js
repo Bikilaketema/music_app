@@ -1,9 +1,8 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
-const songRoutes = require('./routes/songs');
-const cors = require('cors');
-
+const express = require("express");
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+const songRoutes = require("./routes/songs");
+const cors = require("cors");
 
 // Load environment variables
 dotenv.config();
@@ -13,23 +12,23 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 //Allow cors
-app.use(cors())
+app.use(cors());
 
 // Middleware to parse JSON
 app.use(express.json());
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.log('MongoDB connection error:', err));
-
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB connected"))
+  .catch((err) => console.log("MongoDB connection error:", err));
 
 // Use the song routes
-app.use('/api/songs', songRoutes);
+app.use("/api/songs", songRoutes);
 
-// Define a simple route
-app.get('/', (req, res) => {
-  res.send('Hello, world!');
+// Defined a simple route for test purpose when first created the backend
+app.get("/", (req, res) => {
+  res.send("Hello, world!");
 });
 
 // Start the server

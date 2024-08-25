@@ -12,6 +12,7 @@ The backend is a REST API designed to manage song information. You can perform t
 - **List** all songs
 - **Update** song details
 - **Remove** a song
+- **Add song bulkly** In the backend users can also add songs in bulk
 
 ### Key Features
 
