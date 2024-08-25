@@ -92,7 +92,10 @@ Create a `.env` file in the root directory of the frontend with the following co
    `npm start`
 
 4. **Access the Application**:
-   - Open your browser and go to: `http://localhost:3000`
+   - Open your browser and go to: `http://localhost:3000
+  
+## You can access the app on vercel
+ [click here](https://music-app-lilac-seven.vercel.app/).
 
 ## Troubleshooting
 
