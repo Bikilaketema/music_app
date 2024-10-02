@@ -40,9 +40,9 @@ jobs:
         cache: 'npm'
 
     # Install dependencies in the backend directory
-    - name: 🔨 Install Dependencies
+    - name: Install dependencies
+      working-directory: ./backend
       run: npm ci
-      working-directory: ./backend  # Ensure the working directory is set to 'backend'
 
     # Build the project (if applicable)
     - name: Build Project
