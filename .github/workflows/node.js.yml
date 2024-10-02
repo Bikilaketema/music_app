@@ -55,7 +55,7 @@ jobs:
       run: |
         git config core.sparseCheckout true
         echo "backend/*" >> .git/info/sparse-checkout
-        git read-tree -u HEAD
+        git read-tree HEAD
 
     # List files to confirm the correct files are checked out for deployment
     - name: List Files After Sparse Checkout for Deployment
