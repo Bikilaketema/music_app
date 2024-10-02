@@ -13,8 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x, 20.x, 22.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+        node-version: [18.x]
 
     steps:
     - name: 🚚 Get latest code
@@ -53,12 +52,13 @@ jobs:
     - name: Use Node.js 20.x for deployment
       uses: actions/setup-node@v4
       with:
-        node-version: '20.x'
+        node-version: '18.x'
 
     # Install dependencies in the backend directory for deployment
     - name: Install Dependencies for Deploy
-      run: npm ci
-      working-directory: ./music_app/backend
+      run: |
+        cd backend
+        npm ci
 
     # Set environment variables
     - name: Set environment variables
