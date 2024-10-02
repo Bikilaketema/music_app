@@ -27,13 +27,6 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
 
-    # Cache npm dependencies
-    - name: Cache npm dependencies
-      uses: actions/cache@v4
-      with:
-        path: ./music_app/backend/node_modules
-        key: ${{ runner.os }}-node-${{ hashFiles('./music_app/backend/package-lock.json') }}
-
     # Install dependencies in the backend directory
     - name: 🔨 Install Dependencies
       if: steps.cache-node-modules.outputs.cache-hit != 'true'
