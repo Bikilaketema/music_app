@@ -29,8 +29,8 @@ jobs:
     # Install dependencies in the backend directory
     - name: 🔨 Install Dependencies
       run: |
-        cd backend
         npm ci
+      working-directory: ./music_app/backend
 
     # Build the project (if applicable)
     - name: Build Project
