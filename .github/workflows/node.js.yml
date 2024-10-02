@@ -25,7 +25,7 @@ jobs:
     - name: Enable Sparse Checkout
       run: |
         git config core.sparseCheckout true
-        echo "music_app/backend/*" >> .git/info/sparse-checkout
+        echo "backend/*" >> .git/info/sparse-checkout
         git read-tree HEAD  # Removed the '-u' option
 
     # List files to confirm the correct files are checked out
@@ -42,12 +42,12 @@ jobs:
     # Install dependencies in the backend directory
     - name: 🔨 Install Dependencies
       run: npm ci
-      working-directory: ./music_app/backend
+      working-directory: ./backend  # Ensure the working directory is set to 'backend'
 
     # Build the project (if applicable)
     - name: Build Project
       run: npm run build --if-present
-      working-directory: ./music_app/backend
+      working-directory: ./backend  # Ensure the working directory is set to 'backend'
 
   deploy:
 
@@ -65,7 +65,7 @@ jobs:
     - name: Enable Sparse Checkout for Deployment
       run: |
         git config core.sparseCheckout true
-        echo "music_app/backend/*" >> .git/info/sparse-checkout
+        echo "backend/*" >> .git/info/sparse-checkout
         git read-tree HEAD  # Removed the '-u' option
 
     # List files to confirm the correct files are checked out for deployment
@@ -81,7 +81,7 @@ jobs:
     # Install dependencies in the backend directory for deployment
     - name: Install Dependencies for Deploy
       run: npm ci
-      working-directory: ./music_app/backend
+      working-directory: ./backend  # Ensure the working directory is set to 'backend'
 
     # Set environment variables
     - name: Set environment variables
@@ -98,5 +98,5 @@ jobs:
         server: ${{ secrets.FTP_SERVER }}      # Use GitHub Secrets for sensitive data
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: ./music_app/backend          # Set the backend directory for deployment
-        server-dir: /music_app_API              # Replace with the directory on your cPanel server
+        local-dir: ./backend          # Set the backend directory for deployment
+        server-dir: /music_app_API    # Replace with the directory on your cPanel server
