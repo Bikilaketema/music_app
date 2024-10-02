@@ -26,7 +26,11 @@ jobs:
       run: |
         git config core.sparseCheckout true
         echo "music_app/backend/*" >> .git/info/sparse-checkout
-        git read-tree HEAD
+        git read-tree HEAD  # Removed the '-u' option
+
+    # List files to confirm the correct files are checked out
+    - name: List Files After Sparse Checkout
+      run: ls -R
 
     # Use the matrix node version
     - name: Use Node.js ${{ matrix.node-version }}
@@ -62,13 +66,17 @@ jobs:
       run: |
         git config core.sparseCheckout true
         echo "music_app/backend/*" >> .git/info/sparse-checkout
-        git read-tree -u -f HEAD
+        git read-tree HEAD  # Removed the '-u' option
+
+    # List files to confirm the correct files are checked out for deployment
+    - name: List Files After Sparse Checkout for Deployment
+      run: ls -R
 
     # Use the latest Node.js version for deployment
     - name: Use Node.js 20.x for deployment
       uses: actions/setup-node@v4
       with:
-        node-version: '18.x'
+        node-version: '20.x'
 
     # Install dependencies in the backend directory for deployment
     - name: Install Dependencies for Deploy
