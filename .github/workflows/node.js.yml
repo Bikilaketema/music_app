@@ -61,19 +61,21 @@ jobs:
       run: npm ci
       working-directory: ./music_app/backend
 
-    # Set environment variables for deployment
+    # Set environment variables
     - name: Set environment variables
       env:
-        PORT: ${{ secrets.PORT }}
-        MONGO_URI: ${{ secrets.MONGO_URI }}
+        DB_HOST: your_db_host
+        DB_USER: your_db_user
+        DB_PASSWORD: your_db_password
+        NODE_ENV: production
       run: echo "Environment variables set"
 
     # Deploy to cPanel using FTP
     - name: Deploy to cPanel via FTP
       uses: SamKirkland/FTP-Deploy-Action@4.3.0
       with:
-        server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
+        server: ${{ env.FTP_SERVER }}
+        username: ${{ env.FTP_USERNAME }}
+        password: ${{ env.FTP_PASSWORD }}
         local-dir: ./music_app/backend # Set the backend directory for deployment
-        server-dir: /music_app_API # Replace with the directory on your cPanel server
+        server-dir: /music_app_API     # Replace with the directory on your cPanel server
