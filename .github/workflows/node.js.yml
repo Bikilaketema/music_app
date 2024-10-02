@@ -18,23 +18,28 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+
+    # Use the matrix node version
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
 
-    # Navigate to the backend folder and install dependencies
-    - run: cd backend && npm ci
-      working-directory: ./backend
+    # Install dependencies in the backend directory
+    - name: Install Dependencies
+      run: npm ci
+      working-directory: ./music_app/backend
 
     # Build the project (if applicable)
-    - run: npm run build --if-present
-      working-directory: ./backend
+    - name: Build Project
+      run: npm run build --if-present
+      working-directory: ./music_app/backend
 
     # Run tests
-    - run: npm test
-      working-directory: ./backend
+    - name: Run Tests
+      run: npm test
+      working-directory: ./music_app/backend
 
   deploy:
 
@@ -51,9 +56,17 @@ jobs:
       with:
         node-version: '20.x'
 
-    # Navigate to backend folder and install dependencies again if needed
-    - run: npm ci
-      working-directory: ./backend
+    # Install dependencies in the backend directory for deployment
+    - name: Install Dependencies for Deploy
+      run: npm ci
+      working-directory: ./music_app/backend
+
+    # Set environment variables for deployment
+    - name: Set environment variables
+      env:
+        PORT: ${{ secrets.PORT }}
+        MONGO_URI: ${{ secrets.MONGO_URI }}
+      run: echo "Environment variables set"
 
     # Deploy to cPanel using FTP
     - name: Deploy to cPanel via FTP
@@ -62,5 +75,5 @@ jobs:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: ./backend # Updated to point to the backend directory
+        local-dir: ./music_app/backend # Set the backend directory for deployment
         server-dir: /music_app_API # Replace with the directory on your cPanel server
