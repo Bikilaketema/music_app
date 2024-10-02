@@ -26,7 +26,7 @@ jobs:
       run: |
         git config core.sparseCheckout true
         echo "music_app/backend/*" >> .git/info/sparse-checkout
-        git read-tree -u -f HEAD
+        git read-tree -u HEAD
 
     # Use the matrix node version
     - name: Use Node.js ${{ matrix.node-version }}
