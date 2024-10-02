@@ -20,7 +20,6 @@ jobs:
       uses: actions/checkout@v4
       with:
         fetch-depth: 1
-        path: backend
 
     # Use sparse checkout to only include the backend directory
     - name: Enable Sparse Checkout
@@ -57,7 +56,6 @@ jobs:
       uses: actions/checkout@v4
       with:
         fetch-depth: 1
-        path: backend
 
     # Use sparse checkout to only include the backend directory for deployment
     - name: Enable Sparse Checkout for Deployment
