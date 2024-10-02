@@ -1,0 +1,62 @@
+name: Node.js CI and Deploy to cPanel
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 22.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    # Navigate to the backend folder and install dependencies
+    - run: cd backend && npm ci
+
+    # Build the project (if applicable)
+    - run: cd backend && npm run build --if-present
+
+    # Run tests
+    - run: cd backend && npm test
+
+  deploy:
+
+    runs-on: ubuntu-latest
+
+    needs: build
+
+    steps:
+    - uses: actions/checkout@v4
+
+    # Use the latest Node.js version for deployment
+    - name: Use Node.js 20.x
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+
+    # Navigate to backend folder and install dependencies again if needed
+    - run: cd backend && npm ci
+
+    # Deploy to cPanel using FTP
+    - name: Deploy to cPanel via FTP
+      uses: SamKirkland/FTP-Deploy-Action@4.3.0
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: ./backend # Updated to point to the backend directory
+        server-dir: /music_app_API # Replace with the directory on your cPanel server
