@@ -26,11 +26,11 @@ jobs:
       run: |
         git config core.sparseCheckout true
         echo "backend/*" >> .git/info/sparse-checkout
-        git read-tree HEAD  # Removed the '-u' option
+        git read-tree HEAD
 
     # List files to confirm the correct files are checked out
     - name: List Files After Sparse Checkout
-      run: ls -R
+      run: ls -R backend  # Specify the backend directory
 
     # Use the matrix node version
     - name: Use Node.js ${{ matrix.node-version }}
@@ -41,8 +41,9 @@ jobs:
 
     # Install dependencies in the backend directory
     - name: Install dependencies
-      working-directory: ./backend
-      run: npm ci
+      run: |
+        cd backend  # Change to backend directory
+        npm ci
 
   deploy:
 
@@ -61,11 +62,11 @@ jobs:
       run: |
         git config core.sparseCheckout true
         echo "backend/*" >> .git/info/sparse-checkout
-        git read-tree HEAD  # Removed the '-u' option
+        git read-tree HEAD
 
     # List files to confirm the correct files are checked out for deployment
     - name: List Files After Sparse Checkout for Deployment
-      run: ls -R
+      run: ls -R backend  # Specify the backend directory
 
     # Use the latest Node.js version for deployment
     - name: Use Node.js 20.x for deployment
@@ -75,14 +76,15 @@ jobs:
 
     # Install dependencies in the backend directory for deployment
     - name: Install Dependencies for Deploy
-      run: npm ci
-      working-directory: ./backend  # Ensure the working directory is set to 'backend'
+      run: |
+        cd backend  # Change to backend directory
+        npm ci
 
     # Set environment variables
     - name: Set environment variables
       run: echo "Environment variables set"
       env:
-        MONGO_URI: ${{ secrets.MONGO_URI }}        # Use GitHub Secrets for sensitive data
+        MONGO_URI: ${{ secrets.MONGO_URI }}
         PORT: ${{ secrets.PORT }}
         NODE_ENV: production
 
@@ -90,8 +92,8 @@ jobs:
     - name: Deploy to cPanel via FTP
       uses: SamKirkland/FTP-Deploy-Action@4.3.0
       with:
-        server: ${{ secrets.FTP_SERVER }}      # Use GitHub Secrets for sensitive data
+        server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: ./backend          # Set the backend directory for deployment
-        server-dir: /music_app_API    # Replace with the directory on your cPanel server
+        local-dir: ./backend  # Set the backend directory for deployment
+        server-dir: /music_app_API
