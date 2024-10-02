@@ -29,10 +29,9 @@ jobs:
 
     # Install dependencies in the backend directory
     - name: 🔨 Install Dependencies
-      if: steps.cache-node-modules.outputs.cache-hit != 'true'
       run: |
         cd backend
-        npm install
+        npm ci
 
     # Build the project (if applicable)
     - name: Build Project
