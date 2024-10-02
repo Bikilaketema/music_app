@@ -16,8 +16,18 @@ jobs:
         node-version: [18.x]
 
     steps:
-    - name: 🚚 Get latest code
+    - name: 🚚 Checkout Backend Code
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 1
+        path: backend
+
+    # Use sparse checkout to only include the backend directory
+    - name: Enable Sparse Checkout
+      run: |
+        git config core.sparseCheckout true
+        echo "music_app/backend/*" >> .git/info/sparse-checkout
+        git read-tree -u -f HEAD
 
     # Use the matrix node version
     - name: Use Node.js ${{ matrix.node-version }}
@@ -28,15 +38,13 @@ jobs:
 
     # Install dependencies in the backend directory
     - name: 🔨 Install Dependencies
-      run: |
-        npm ci
+      run: npm ci
       working-directory: ./music_app/backend
 
     # Build the project (if applicable)
     - name: Build Project
-      run: |
-        cd backend
-        npm run build --if-present
+      run: npm run build --if-present
+      working-directory: ./music_app/backend
 
   deploy:
 
@@ -45,8 +53,18 @@ jobs:
     needs: build
 
     steps:
-    - name: 🚚 Get latest code for deployment
+    - name: 🚚 Checkout Backend Code for Deployment
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 1
+        path: backend
+
+    # Use sparse checkout to only include the backend directory for deployment
+    - name: Enable Sparse Checkout for Deployment
+      run: |
+        git config core.sparseCheckout true
+        echo "music_app/backend/*" >> .git/info/sparse-checkout
+        git read-tree -u -f HEAD
 
     # Use the latest Node.js version for deployment
     - name: Use Node.js 20.x for deployment
@@ -56,9 +74,8 @@ jobs:
 
     # Install dependencies in the backend directory for deployment
     - name: Install Dependencies for Deploy
-      run: |
-        cd backend
-        npm ci
+      run: npm ci
+      working-directory: ./music_app/backend
 
     # Set environment variables
     - name: Set environment variables
