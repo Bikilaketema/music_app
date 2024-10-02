@@ -16,7 +16,7 @@ jobs:
         node-version: [20.x]
 
     steps:
-    - name: 🚚 Checkout Backend Code
+    - name: 🚚 Checkout Code
       uses: actions/checkout@v4
       with:
         fetch-depth: 1
@@ -26,11 +26,11 @@ jobs:
       run: |
         git config core.sparseCheckout true
         echo "backend/*" >> .git/info/sparse-checkout
-        git read-tree HEAD
+        git read-tree -u HEAD
 
     # List files to confirm the correct files are checked out
     - name: List Files After Sparse Checkout
-      run: ls -R backend  # Specify the backend directory
+      run: ls -R  # List from the root to confirm directory structure
 
     # Use the matrix node version
     - name: Use Node.js ${{ matrix.node-version }}
@@ -41,9 +41,8 @@ jobs:
 
     # Install dependencies in the backend directory
     - name: Install dependencies
-      run: |
-        cd backend  # Change to backend directory
-        npm ci
+      working-directory: ./backend  # Specify backend directory
+      run: npm ci
 
   deploy:
 
@@ -52,7 +51,7 @@ jobs:
     needs: build
 
     steps:
-    - name: 🚚 Checkout Backend Code for Deployment
+    - name: 🚚 Checkout Code for Deployment
       uses: actions/checkout@v4
       with:
         fetch-depth: 1
@@ -62,11 +61,11 @@ jobs:
       run: |
         git config core.sparseCheckout true
         echo "backend/*" >> .git/info/sparse-checkout
-        git read-tree HEAD
+        git read-tree -u HEAD
 
     # List files to confirm the correct files are checked out for deployment
     - name: List Files After Sparse Checkout for Deployment
-      run: ls -R backend  # Specify the backend directory
+      run: ls -R  # List from the root to confirm directory structure
 
     # Use the latest Node.js version for deployment
     - name: Use Node.js 20.x for deployment
@@ -76,9 +75,8 @@ jobs:
 
     # Install dependencies in the backend directory for deployment
     - name: Install Dependencies for Deploy
-      run: |
-        cd backend  # Change to backend directory
-        npm ci
+      working-directory: ./backend  # Ensure the working directory is set to 'backend'
+      run: npm ci
 
     # Set environment variables
     - name: Set environment variables
