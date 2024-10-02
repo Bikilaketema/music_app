@@ -88,4 +88,4 @@ jobs:
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
         local-dir: ./backend  # Set the backend directory for deployment
-        server-dir: /music_app_API
+        server-dir: /music_app_API/
