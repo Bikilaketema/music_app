@@ -76,7 +76,7 @@ jobs:
     # Install dependencies in the backend directory for deployment
     - name: Install Dependencies for Deploy
       working-directory: ./backend  # Ensure the working directory is set to 'backend'
-      run: npm ci
+      run: npm install
 
     # Set environment variables
     - name: Set environment variables
